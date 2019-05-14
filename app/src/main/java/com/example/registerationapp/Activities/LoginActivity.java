@@ -9,9 +9,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.registerationapp.API.APIManager;
+import com.example.registerationapp.API.Models.DefaultResponse;
+import com.example.registerationapp.API.Models.LoginResponse;
 import com.example.registerationapp.Base.BaseActivity;
 import com.example.registerationapp.R;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
@@ -19,6 +27,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     EditText password;
     Button login;
     TextView register;
+
+    public static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +79,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         //password validation
         //make sure that password is no less than 6 chars
-        if (sPassword.length() <6) {
+        if (sPassword.length() < 6) {
             password.setError(getString(R.string.invalid_password));
             return;
         }
@@ -78,13 +90,39 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         showProgressBar();
 
+        APIManager.getAPIs()
+                .loginUser(sEmail, sPassword)
+                .enqueue(new Callback<LoginResponse>() {
+                    @Override
+                    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                        hideProgressBar();
+
+                        LoginResponse loginResponse = response.body();
+
+                        if (!loginResponse.ismError()) {
+                            //proceed with the login
+
+                            // if everything is fine and the login is successful,
+                            // we'll store the User in SharedPreference or SQLite Database (Here I will use SharedPreferences)
+                            // and then we'll open the ProfileActivity
+
+                            Toast.makeText(activity, loginResponse.getmMessage(), Toast.LENGTH_SHORT).show();
 
 
+                        } else {
+                            Toast.makeText(activity, loginResponse.getmMessage(), Toast.LENGTH_SHORT).show();
+
+                        }
 
 
-    }
+                    }
 
-    public static boolean isValidEmail (CharSequence target) {
-        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+                    @Override
+                    public void onFailure(Call<LoginResponse> call, Throwable t) {
+
+                    }
+                });
+
+
     }
 }

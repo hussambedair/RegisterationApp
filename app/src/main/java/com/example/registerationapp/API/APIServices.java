@@ -1,6 +1,7 @@
 package com.example.registerationapp.API;
 
 import com.example.registerationapp.API.Models.DefaultResponse;
+import com.example.registerationapp.API.Models.LoginResponse;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -25,8 +26,9 @@ public interface APIServices {
                                               @Field("school") String school);
 
 
+    @FormUrlEncoded
     @POST("userlogin")  // createuser is endpoint of our url
-    public Call<DefaultResponse> loginUser (
+    public Call<LoginResponse> loginUser (
 
                                               @Field("email") String email,
                                               @Field("password") String password);
