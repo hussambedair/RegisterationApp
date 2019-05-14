@@ -14,7 +14,7 @@ public interface APIServices {
 
     @FormUrlEncoded //add this annotation
     @POST("createuser")  // createuser is endpoint of our url
-    public Call<ResponseBody> createUser (
+    public Call<ResponseBody> createUser ( //if you dont't know the type of response, set it to ResponseBody
             // Here, we'll define all the fields that we need to
             // send while creating the user
 

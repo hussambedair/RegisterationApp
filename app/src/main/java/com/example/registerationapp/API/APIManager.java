@@ -31,7 +31,7 @@ public class APIManager {
 
 
             retrofitInstance = new Retrofit.Builder()
-                    .baseUrl("https://localhost/MyApi/public/")
+                    .baseUrl("https://192.168.1.112/MyApi/public/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build();

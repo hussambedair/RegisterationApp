@@ -9,8 +9,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.registerationapp.API.APIManager;
 import com.example.registerationapp.Base.BaseActivity;
 import com.example.registerationapp.R;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterationActivity extends BaseActivity implements View.OnClickListener {
 
@@ -96,8 +102,30 @@ public class RegisterationActivity extends BaseActivity implements View.OnClickL
         // Now as the validation conditions are passed,
         // do the registeration using the API call
 
-
         showProgressBar();
+
+
+        APIManager.getAPIs()
+                .createUser(sEmail,sPassword,sName,sSchool)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        hideProgressBar();
+                        if (response.isSuccessful()) {
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        hideProgressBar();
+
+
+                    }
+                });
+
+
+
 
 
 
