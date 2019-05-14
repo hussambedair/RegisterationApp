@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">RegisterationApp</string>
+    <string name="name_required">Please Enter Your Name</string>
+    <string name="enter_name">Please Enter Your Name</string>
+    <string name="enter_school">Please Enter Your School Name</string>
+    <string name="invalid_email">Invalid</string>
+    <string name="invalied_email">Invalid Email</string>
+    <string name="invalid_password">Invalid Password</string>
+</resources>
