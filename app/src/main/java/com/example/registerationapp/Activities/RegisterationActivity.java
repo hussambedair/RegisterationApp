@@ -8,10 +8,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.registerationapp.API.APIManager;
 import com.example.registerationapp.Base.BaseActivity;
 import com.example.registerationapp.R;
+
+import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -48,9 +51,9 @@ public class RegisterationActivity extends BaseActivity implements View.OnClickL
         int id = v.getId();
         switch (id) {
             case R.id.login_text_view:
-                Intent loginIntent = new Intent(RegisterationActivity.this, LoginActivity.class);
-                startActivity(loginIntent);
-                break;
+                //Intent loginIntent = new Intent(RegisterationActivity.this, LoginActivity.class);
+                //startActivity(loginIntent);
+               // break;
                 
             case  R.id.register_button:
                 registerUser();
@@ -113,12 +116,29 @@ public class RegisterationActivity extends BaseActivity implements View.OnClickL
                         hideProgressBar();
                         if (response.isSuccessful()) {
 
+                            try {
+                                String s = response.body().string(); // this is the response that we got from the server
+                                Toast.makeText(activity, s , Toast.LENGTH_SHORT).show();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        } else {
+                            try {
+                                String s = response.errorBody().string();
+                                Toast.makeText(activity, s , Toast.LENGTH_SHORT).show();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
                         }
                     }
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         hideProgressBar();
+                        Toast.makeText(activity, t.getMessage(),Toast.LENGTH_SHORT).show();
 
 
                     }
