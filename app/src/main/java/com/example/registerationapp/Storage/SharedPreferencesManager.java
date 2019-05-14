@@ -61,6 +61,37 @@ public class SharedPreferencesManager {
     }
 
     // create a method to return the User
+    public User getUser () {
+
+        SharedPreferences sharedPreferences =
+                context.getSharedPreferences("my SharedPref", context.MODE_PRIVATE);
+        User user = new User(sharedPreferences.getInt("id", -1),
+                sharedPreferences.getString("email", null),
+                sharedPreferences.getString("name",null),
+                sharedPreferences.getString("school", null));
+
+        return user;
+
+
+    }
+
+    // create a method to logout the user
+    public void logoutUser() {
+
+        SharedPreferences sharedPreferences =
+                context.getSharedPreferences("my SharedPref", context.MODE_PRIVATE);
+        // only this application will access this SharedPreferences
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+
+
+
+
+
+    }
+
 
 
 
