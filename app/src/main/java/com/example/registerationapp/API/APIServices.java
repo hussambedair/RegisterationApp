@@ -25,6 +25,14 @@ public interface APIServices {
                                               @Field("school") String school);
 
 
+    @POST("userlogin")  // createuser is endpoint of our url
+    public Call<DefaultResponse> loginUser (
+
+                                              @Field("email") String email,
+                                              @Field("password") String password);
+
+
+
 
 
 

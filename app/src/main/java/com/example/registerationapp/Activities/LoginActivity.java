@@ -80,6 +80,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 
 
+
+
     }
 
     public static boolean isValidEmail (CharSequence target) {
