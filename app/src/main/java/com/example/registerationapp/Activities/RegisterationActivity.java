@@ -56,9 +56,9 @@ public class RegisterationActivity extends BaseActivity implements View.OnClickL
         int id = v.getId();
         switch (id) {
             case R.id.login_text_view:
-                //Intent loginIntent = new Intent(RegisterationActivity.this, LoginActivity.class);
-                //startActivity(loginIntent);
-               // break;
+                Intent loginIntent = new Intent(RegisterationActivity.this, LoginActivity.class);
+                startActivity(loginIntent);
+                break;
                 
             case  R.id.register_button:
                 registerUser();
