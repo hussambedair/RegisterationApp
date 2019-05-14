@@ -11,8 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.registerationapp.API.APIManager;
+import com.example.registerationapp.API.Models.DefaultResponse;
 import com.example.registerationapp.Base.BaseActivity;
 import com.example.registerationapp.R;
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -110,15 +115,44 @@ public class RegisterationActivity extends BaseActivity implements View.OnClickL
 
         APIManager.getAPIs()
                 .createUser(sEmail,sPassword,sName,sSchool)
+                .enqueue(new Callback<DefaultResponse>() {
+                    @Override
+                    public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+                        hideProgressBar();
+
+                        if (response.isSuccessful()) {
+                            DefaultResponse defaultResponse = response.body();
+                            Toast.makeText(activity, defaultResponse.getmMessage(),Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(activity, "User Already Exists",Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<DefaultResponse> call, Throwable t) {
+                        hideProgressBar();
+                        Toast.makeText(activity, t.getMessage(),Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+
+
+
+
+
+        /*APIManager.getAPIs()
+                .createUser(sEmail,sPassword,sName,sSchool)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        String s = null;
                         hideProgressBar();
                         if (response.isSuccessful()) {
-
                             try {
-                                String s = response.body().string(); // this is the response that we got from the server
-                                Toast.makeText(activity, s , Toast.LENGTH_SHORT).show();
+                                 s = response.body().string(); // this is the response that we got from the server,  and we turn it into a String
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -126,13 +160,27 @@ public class RegisterationActivity extends BaseActivity implements View.OnClickL
 
                         } else {
                             try {
-                                String s = response.errorBody().string();
-                                Toast.makeText(activity, s , Toast.LENGTH_SHORT).show();
+                                 s = response.errorBody().string();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
 
                         }
+
+                        if (s != null) {
+                            try { //we will parse the json manually based on the json response that we have
+                                // "error" : ----- , "message" : "------"
+                                JSONObject jsonObject = new JSONObject(s);
+                                Toast.makeText(activity,jsonObject.getString("message"),
+                                        Toast.LENGTH_SHORT).show();
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+
+
                     }
 
                     @Override
@@ -142,7 +190,7 @@ public class RegisterationActivity extends BaseActivity implements View.OnClickL
 
 
                     }
-                });
+                });*/
 
 
 
