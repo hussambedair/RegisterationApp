@@ -49,7 +49,7 @@ public class HomeActivity extends BaseActivity {
     public void attachFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container,fragment)
+                .replace(R.id.fragment_container, fragment)
                 //.addToBackStack(null)
                 .commit();
     }
@@ -59,6 +59,7 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView.setSelectedItemId(R.id.navigation_home);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         wellcomeText = findViewById(R.id.wellcome_text_view);
