@@ -19,7 +19,7 @@ import com.example.registerationapp.Storage.SharedPreferencesManager;
 public class HomeActivity extends BaseActivity {
 
 
-    TextView wellcomeText;
+    //TextView wellcomeText;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -62,10 +62,10 @@ public class HomeActivity extends BaseActivity {
         navView.setSelectedItemId(R.id.navigation_home);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        wellcomeText = findViewById(R.id.wellcome_text_view);
+        /*wellcomeText = findViewById(R.id.wellcome_text_view);
         // we want to display a wellcome message in this textview
         User user = SharedPreferencesManager.getInstance(this).getUser();
-        wellcomeText.setText("Welcome Back " + user.getmName());
+        wellcomeText.setText("Welcome Back " + user.getmName());*/
     }
 
     @Override
