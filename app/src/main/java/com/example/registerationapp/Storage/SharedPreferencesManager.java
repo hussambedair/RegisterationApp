@@ -16,7 +16,7 @@ public class SharedPreferencesManager {
         this.context = context;
     }
 
-    private static SharedPreferencesManager getInstance(Context context) {
+    public static SharedPreferencesManager getInstance(Context context) {
 
         if (sharedPreferencesManagerInstance == null) { // create
             sharedPreferencesManagerInstance = new SharedPreferencesManager(context);

@@ -14,6 +14,7 @@ import com.example.registerationapp.API.APIManager;
 import com.example.registerationapp.API.Models.DefaultResponse;
 import com.example.registerationapp.Base.BaseActivity;
 import com.example.registerationapp.R;
+import com.example.registerationapp.Storage.SharedPreferencesManager;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
@@ -49,6 +50,16 @@ public class RegisterationActivity extends BaseActivity implements View.OnClickL
         login.setOnClickListener(this);
         register = findViewById(R.id.register_button);
         register.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (SharedPreferencesManager.getInstance(activity).isLoggedIn()) {
+            Intent i = new Intent(RegisterationActivity.this, ProfileActivity.class);
+            startActivity(i);
+            finish();
+        }
     }
 
     @Override

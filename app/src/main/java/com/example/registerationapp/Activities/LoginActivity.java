@@ -16,6 +16,7 @@ import com.example.registerationapp.API.Models.DefaultResponse;
 import com.example.registerationapp.API.Models.LoginResponse;
 import com.example.registerationapp.Base.BaseActivity;
 import com.example.registerationapp.R;
+import com.example.registerationapp.Storage.SharedPreferencesManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,6 +44,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         login.setOnClickListener(this);
         register = findViewById(R.id.register_text_view);
         register.setOnClickListener(this);
+
+    }
+
+    // check if the user is already logged in, so we send him directly to the ProfileActivity
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (SharedPreferencesManager.getInstance(activity).isLoggedIn()) {
+            Intent i = new Intent(LoginActivity.this, ProfileActivity.class);
+            startActivity(i);
+            finish();
+        }
 
     }
 
@@ -106,7 +120,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             // we'll store the User in SharedPreference or SQLite Database (Here I will use SharedPreferences)
                             // and then we'll open the ProfileActivity
 
+                            SharedPreferencesManager.getInstance(activity).saveUser(loginResponse.getmUser());
+
                             Toast.makeText(activity, loginResponse.getmMessage(), Toast.LENGTH_SHORT).show();
+
+                            Intent i = new Intent(LoginActivity.this, ProfileActivity.class);
+                            startActivity(i);
+                            finish();
 
 
                         } else {
