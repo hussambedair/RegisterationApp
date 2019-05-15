@@ -53,7 +53,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         super.onStart();
 
         if (SharedPreferencesManager.getInstance(activity).isLoggedIn()) {
-            Intent i = new Intent(LoginActivity.this, ProfileActivity.class);
+            Intent i = new Intent(LoginActivity.this, HomeActivity.class);
             startActivity(i);
             finish();
         }
@@ -118,13 +118,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                             // if everything is fine and the login is successful,
                             // we'll store the User in SharedPreference or SQLite Database (Here I will use SharedPreferences)
-                            // and then we'll open the ProfileActivity
+                            // and then we'll open the HomeActivity
 
                             SharedPreferencesManager.getInstance(activity).saveUser(loginResponse.getmUser());
 
                             Toast.makeText(activity, loginResponse.getmMessage(), Toast.LENGTH_SHORT).show();
 
-                            Intent i = new Intent(LoginActivity.this, ProfileActivity.class);
+                            Intent i = new Intent(LoginActivity.this, HomeActivity.class);
                             startActivity(i);
                             finish();
 

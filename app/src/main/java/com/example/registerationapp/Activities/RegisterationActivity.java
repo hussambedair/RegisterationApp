@@ -56,7 +56,7 @@ public class RegisterationActivity extends BaseActivity implements View.OnClickL
     protected void onStart() {
         super.onStart();
         if (SharedPreferencesManager.getInstance(activity).isLoggedIn()) {
-            Intent i = new Intent(RegisterationActivity.this, ProfileActivity.class);
+            Intent i = new Intent(RegisterationActivity.this, HomeActivity.class);
             startActivity(i);
             finish();
         }
