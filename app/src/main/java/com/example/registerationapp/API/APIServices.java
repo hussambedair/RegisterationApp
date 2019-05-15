@@ -2,6 +2,7 @@ package com.example.registerationapp.API;
 
 import com.example.registerationapp.API.Models.DefaultResponse;
 import com.example.registerationapp.API.Models.LoginResponse;
+import com.example.registerationapp.API.Models.UsersResponse;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -32,6 +33,9 @@ public interface APIServices {
 
                                               @Field("email") String email,
                                               @Field("password") String password);
+
+    @GET("allusers")
+    public Call<UsersResponse> getAllUsers ();
 
 
 
