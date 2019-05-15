@@ -30,22 +30,29 @@ public class HomeActivity extends BaseActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     fragment = new HomeFragment();
+                    attachFragment(fragment);
                     return true;
                 case R.id.navigation_users:
                     fragment = new UsersFragment();
+                    attachFragment(fragment);
                     return true;
                 case R.id.navigation_settings:
                     fragment = new SettingsFragment();
+                    attachFragment(fragment);
                     return true;
             }
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container,fragment)
-                    //.addToBackStack(null)
-                    .commit();
+
             return false;
         }
     };
+
+    public void attachFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container,fragment)
+                //.addToBackStack(null)
+                .commit();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
