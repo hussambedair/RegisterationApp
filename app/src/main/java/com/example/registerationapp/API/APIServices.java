@@ -6,6 +6,7 @@ import com.example.registerationapp.API.Models.UsersResponse;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -65,6 +66,20 @@ public interface APIServices {
 
 
     );
+
+    @FormUrlEncoded
+    @DELETE("deleteuser/{id}")   // "deleteuser/{id}"  it is like that in the url
+    public Call <DefaultResponse> deleteUser ( // we used the LoginResponse because the response here looks like it
+
+                                                   // the id is a path so we use PATH
+
+                                                   @Path("id") int id
+
+
+
+    );
+
+
 
 
 

@@ -1,8 +1,11 @@
 package com.example.registerationapp.Fragments;
 
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -16,6 +19,8 @@ import com.example.registerationapp.API.APIManager;
 import com.example.registerationapp.API.Models.DefaultResponse;
 import com.example.registerationapp.API.Models.LoginResponse;
 import com.example.registerationapp.API.Models.User;
+import com.example.registerationapp.Activities.LoginActivity;
+import com.example.registerationapp.Activities.RegisterationActivity;
 import com.example.registerationapp.Base.BaseFragment;
 import com.example.registerationapp.R;
 import com.example.registerationapp.Storage.SharedPreferencesManager;
@@ -101,11 +106,54 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void deleteUserProfile() {
-        // logic of profile deletion here
+        // first, we'll display a dialog to the user to confirm deletion
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Are You Sure ?");
+        builder.setMessage("This action is irreversable");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                User currentUser = SharedPreferencesManager.getInstance(getActivity()).getUser();
+                APIManager.getAPIs()
+                        .deleteUser(currentUser.getmId())
+                        .enqueue(new Callback<DefaultResponse>() {
+                            @Override
+                            public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+                                if (response.isSuccessful()) {
+                                    SharedPreferencesManager.getInstance(getActivity()).logoutUser();
+                                    Intent intent = new Intent(getActivity(), RegisterationActivity.class);
+                                    startActivity(intent);
+                                    getActivity().finish();
+                                }
+                                Toast.makeText(getActivity(),response.body().getmMessage(),Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<DefaultResponse> call, Throwable t) {
+
+                            }
+                        });
+
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
     }
 
     private void logoutUser() {
         SharedPreferencesManager.getInstance(getActivity()).logoutUser();
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+        getActivity().finish();
+
     }
 
     private void changeUserPassword() {
