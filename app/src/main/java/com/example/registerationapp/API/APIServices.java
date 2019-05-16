@@ -10,13 +10,14 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface APIServices {
 
     //Here, we define all the API calls
 
-    @FormUrlEncoded //add this annotation
+    @FormUrlEncoded // must add this annotation in POST or the app will crash
     @POST("createuser")  // createuser is endpoint of our url
     public Call<DefaultResponse> createUser ( //if you dont't know the type of response, set it to ResponseBody temporarly
                                               // Here, we'll define all the fields that we need to
@@ -36,6 +37,35 @@ public interface APIServices {
 
     @GET("allusers")
     public Call<UsersResponse> getAllUsers ();
+
+
+
+    @FormUrlEncoded
+    @POST("updateuser/{id}") // "updateuser/1"  it is like that in the url
+    public Call<LoginResponse> updateUser(  // we used the LoginResponse because the response here looks like it
+
+            // the id is a path so we use PATH
+
+            @Path("id") int id,
+            @Field("email") String email,
+            @Field("name") String name,
+            @Field("school") String school
+
+
+
+    );
+
+    @FormUrlEncoded
+    @POST("updatepassword")
+    public Call <DefaultResponse> updatePassword ( // we used the LoginResponse because the response here looks like it
+
+                                                   @Field("currentpassword") String currentPassword,
+                                                   @Field("newpassword") String newPassword,
+                                                   @Field("email") String email
+
+
+    );
+
 
 
 

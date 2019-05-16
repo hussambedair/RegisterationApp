@@ -12,9 +12,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.registerationapp.API.APIManager;
+import com.example.registerationapp.API.Models.DefaultResponse;
+import com.example.registerationapp.API.Models.LoginResponse;
+import com.example.registerationapp.API.Models.User;
 import com.example.registerationapp.Base.BaseFragment;
 import com.example.registerationapp.R;
 import com.example.registerationapp.Storage.SharedPreferencesManager;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -101,31 +109,43 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void changeUserPassword() {
-
         String sCurrentPassword = currentPassword.getText().toString();
         String sNewPassword = newPassword.getText().toString();
 
         //password validation
         //make sure that password is no less than 6 chars
         if (sCurrentPassword.length() <6) {
-            //sCurrentPassword.setError(getString(R.string.invalid_password));
+            currentPassword.setError(getString(R.string.invalid_password));
             return;
         }
-        //sCurrentPassword.setError(null);
+        currentPassword.setError(null);
 
+        //password validation
         //make sure that password is no less than 6 chars
         if (sNewPassword.length() <6) {
-            //sNewPassword.setError(getString(R.string.invalid_password));
+            newPassword.setError(getString(R.string.invalid_password));
             return;
         }
-        //sNewPassword.setError(null);
+        newPassword.setError(null);
+
+        User currentUser = SharedPreferencesManager.getInstance(getActivity()).getUser();
+
+        APIManager.getAPIs()
+                .updatePassword(sCurrentPassword, sNewPassword, currentUser.getmEmail())
+                .enqueue(new Callback<DefaultResponse>() {
+                    @Override
+                    public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+                        Toast.makeText(getActivity(), response.body().getmMessage(),Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<DefaultResponse> call, Throwable t) {
+
+                    }
+                });
 
 
-        // check if the current password is correct
-        // change the password with the new password
-
-
-        Toast.makeText(getActivity(),"Password Changed Successfully",Toast.LENGTH_SHORT).show();
 
 
 
@@ -133,7 +153,7 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
 
     private void updateProfile() {
         String sEmail = email.getText().toString();
-        String sName = name.getText().toString();
+        final String sName = name.getText().toString();
         String sSchool = school.getText().toString();
 
         //Name validation
@@ -161,11 +181,28 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
         }
         email.setError(null);
 
-        SharedPreferencesManager.getInstance(getActivity()).getUser().setmEmail(sEmail);
-        SharedPreferencesManager.getInstance(getActivity()).getUser().setmName(sName);
-        SharedPreferencesManager.getInstance(getActivity()).getUser().setmSchool(sSchool);
+        // get the current from the SharedPreferences
+        final User currentUser = SharedPreferencesManager.getInstance(getActivity()).getUser();
 
-        Toast.makeText(getActivity(),"Profile Updated Successfully",Toast.LENGTH_SHORT).show();
+        APIManager.getAPIs()
+                .updateUser(currentUser.getmId(), sEmail,sName,sSchool)
+                .enqueue(new Callback<LoginResponse>() {
+                    @Override
+                    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                        Toast.makeText(getActivity(),response.body().getmMessage(),Toast.LENGTH_SHORT).show();
+                        if (response.isSuccessful()) {
+                            SharedPreferencesManager.getInstance(getActivity()).saveUser(response.body().getmUser());
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<LoginResponse> call, Throwable t) {
+
+                    }
+                });
+
+
 
 
 
